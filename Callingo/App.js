@@ -1,8 +1,18 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import call from 'react-native-phone-call';
+import { StyleSheet, Text, View, Button } from 'react-native';
 
 
 export default class App extends React.Component {
+  call = () => {
+    //handler to make a call
+    const args = {
+      number: '2262864476',
+      prompt: false,
+    };
+ 
+    call(args).catch(console.error);
+  };
   render() {
     return (
       <View style={styles.container}>
@@ -10,6 +20,9 @@ export default class App extends React.Component {
         <Text style={styles.reddd}>Offline Conversation Translator</Text>
         <Text style={styles.reddd}></Text>
         <Text style={styles.redd}>226-286-4476</Text>
+        <View style={styles.redd}>
+        <Button title="Make a call" onPress={this.call} />
+        </View>
         <Text style={styles.reddd}></Text>
         <Text style={styles.reddd}>Chinese</Text>
         <Text style={styles.reddd}>Danish</Text>
@@ -34,23 +47,23 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#020004',
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
   },
   bigBlue: {
-    color: 'yellow',
+    color: '#2D6ED4',
     fontWeight: 'bold',
-    fontSize: 50,
+    fontSize: 55,
   },
   redd: {
-    color: 'red',
+    color: '#E692AA',
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 35,
   },
   reddd: {
-    color: 'white',
+    color: 'black',
     fontWeight: 'bold',
-    fontSize: 10,
+    fontSize: 18,
   },
 });
