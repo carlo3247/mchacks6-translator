@@ -1,3 +1,4 @@
 Flask>=1.0.2
 twilio~=6.0.0
 google-cloud-speech==0.36.3
+watson_developer_cloud==2.7.0

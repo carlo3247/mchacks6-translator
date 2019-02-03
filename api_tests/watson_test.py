@@ -11,7 +11,7 @@ language_translator = LanguageTranslatorV3(
                     url=watson_url)
 
 translation = language_translator.translate(
-            text='Hello world',
-                model_id='en-es').get_result()
+            text='it is going lyrics',
+                model_id='en-fr').get_result()
 
 print(json.dumps(translation, indent=2, ensure_ascii=False))
