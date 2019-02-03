@@ -8,68 +8,63 @@ from twilio.twiml.voice_response import VoiceResponse
 
 import urllib.request
 import time
+import langaugeIdentifier
 
 app = Flask(__name__)
 stt_client = speech.SpeechClient()
 
-britney = """"Oh baby, baby
-Oh baby, baby
-Oh baby, baby, how was I supposed to know
-That something wasn't right here
-Oh baby, baby, I shouldn't have let you go
-And now you're out of sight, yeah
-Show me how want it to be
-Tell me baby 'cause I need to know now, oh because
-My loneliness is killing me (and I)
-I must confess I still believe (still believe)
-When I'm not with you I lose my mind
-Give me a sign
-Hit me baby one more time"""
+twilio_timeout = 2
+first_lang = 'en-US'
+second_lang = ''
+
+def speech_to_text(audio_content, lang):
+    # stt using google cloud
+    audio = types.RecognitionAudio(content=audio_content)
+    config = types.RecognitionConfig(language_code=lang)
+    stt_response = stt_client.recognize(config, audio)
+    text = ''
+    confidence 0
+    if len(stt_response.results) > 0:
+        text = stt_response.results[0].alternatives[0].transcript
+    return text, confidence
+
+def get_higher_confidence(content):
+    textA, confidenceA = speech_to_text(content, first_lang)
+    textB, confidenceB = speech_to_text(content, second_lang)
+    return text, first_lang if confidenceA > confidenceB else textB, second_lang
 
 @app.route("/recorded", methods=['GET', 'POST'])
 def recorded():
     if(request.form['CallStatus'] == 'completed':
+        second_lang = ''
         return
 
-    # get url
     url = request.form['RecordingUrl']
-
-    print('---')
     print(url)
-    print('---')
-
-    # maybe this works
     time.sleep(0.5)
 
     # get .wav file
     audio_file = urllib.request.urlopen(url)
     content = audio_file.read()
 
-    # stt using google cloud
-    audio = types.RecognitionAudio(content=content)
-    config = types.RecognitionConfig(language_code='en-US')
-    stt_response = stt_client.recognize(config, audio)
-
-    if len(stt_response.results) > 0:
-        text = stt_response.results[0].alternatives[0].transcript
-        confidence = stt_response.results[0].alternatives[0].confidence
-    else:
-        response.say('Sorry, I did not get that. Please try again.', voice='alice', language='en-US')
-        response.record(action='/recorded', timeout=2, trim='trim-silence')
-        return str(response)
-
-    print('---')
-    print(text)
-    print(confidence)
-    print('---')
-
     response = VoiceResponse()
-    if text.__contains__('Britney'):
-        response.say(britney, voice='alice', language='en-US')
+    if second_lang == '':
+        text, _ = speech_to_text(content, first_lang)
+        second_lang = findLang(text)
+        # start recording for language
+        response.say('Ready to translate.', voice='alice', language=first_lang)
+        response.record(action='/recorded', timeout=twilio_timeout, trim='trim-silence')
+        return str(response)
     else:
-        response.say(text, voice='alice', language='en-US')
-        response.record(action='/recorded', timeout=2, trim='trim-silence')
-    # response.hangup()
+        text, lang = get_higher_confidence(content)
+    print(text)
+
+    target_lang = first_lang if lang == second_lang else second_lang
+    translated_text = translate(text, lang, target_lang)
+    print(translated_text)
+
+    response.say(translated_text, voice='alice', language=target_lang)
+    response.record(action='/recorded', timeout=twilio_timeout, trim='trim-silence')
     return str(response)
 
 # this is the entry point of a call
