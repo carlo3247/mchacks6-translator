@@ -35,9 +35,12 @@ def findLang(inputString):
             break 
     
     return result
+    
 
 def main():
     findLang('Hello I am english, please translate this to russian not korean')
     
 if __name__ == '__main__':
     main()
+
+
