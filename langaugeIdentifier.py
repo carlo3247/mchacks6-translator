@@ -2,27 +2,8 @@ import re
 def findLang(inputString):
     inputString = inputString.lower();
     listOfWords= re.split('\W+', inputString)
-    print(listOfWords)
-    languageList = ['arabic', 
-                'chinese', 
-                'czech', 
-                'danish', 
-                'dutch',
-                'finnish', 
-                'french', 
-                'german', 
-                'hindi', 
-                'italian', 
-                'japanese', 
-                'korean', 
-                'norwegian', 
-                'polish', 
-                'portuguese',
-                'russian',
-                'spanish',
-                'swedish',
-                'turkish']
-       
+    #print(listOfWords)
+ 
     translatorList = {'arabic': 'ar',
                     'chinese': 'zh',
                     'czech': 'cs', 
@@ -45,11 +26,10 @@ def findLang(inputString):
     flag = 0
     result = ''
     for x in range(0, len(listOfWords)):
-        for y in range(0, len(languageList)):
-            if(languageList[y] == listOfWords[x]):
-                result = translatorList[languageList[y]]
-                #print('This is ' + languageList[y])
-                #print('It corresponds to ' + result)
+        for key in translatorList:
+            if(key == listOfWords[x]):
+                result = translatorList[key]
+                print(result)
                 flag = 1
         if(flag == 1):
             break 
@@ -57,8 +37,10 @@ def findLang(inputString):
     return result
 
 def main():
-    findLang('hello I am russian, not french')
+    findLang('Hello I am english, please translate this to russian not korean')
     
 if __name__ == '__main__':
     main()
+    
+
     
