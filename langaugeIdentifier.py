@@ -3,7 +3,7 @@ def findLang(inputString):
     inputString = inputString.lower();
     listOfWords= re.split('\W+', inputString)
     #print(listOfWords)
- 
+
     translatorList = {'arabic': 'ar',
                     'chinese': 'zh',
                     'czech': 'cs', 
@@ -41,6 +41,3 @@ def main():
     
 if __name__ == '__main__':
     main()
-    
-
-    
