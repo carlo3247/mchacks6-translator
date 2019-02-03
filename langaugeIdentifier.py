@@ -1,25 +1,21 @@
 import re
 
 translatorList = {
-                'arabic': 'ar',
-                'chinese': 'zh',
-                'czech': 'cs', 
-                'danish': 'da', 
-                'dutch': 'nl',
-                'finnish': 'fi', 
-                'french': 'fr', 
-                'german': 'de', 
-                'hindi': 'hi', 
-                'italian': 'it', 
-                'japanese': 'ja', 
-                'korean': 'ko', 
-                'norwegian': 'nb', 
-                'polish': 'pl', 
-                'portuguese': 'pt',
-                'russian': 'ru',
-                'spanish': 'es',
-                'swedish': 'sv',
-                'turkish': 'tr'
+                'chinese': 'zh-HK',
+                'danish': 'da-DK', 
+                'dutch': 'nl-NL',
+                'finnish': 'fi-FI', 
+                'french': 'fr-CA', 
+                'german': 'de-DE', 
+                'italian': 'it-IT', 
+                'japanese': 'ja-JP', 
+                'korean': 'ko-KR', 
+                'norwegian': 'nb-NO', 
+                'polish': 'pl-PL', 
+                'portuguese': 'pt-PT',
+                'russian': 'ru-RU',
+                'spanish': 'es-ES',
+                'swedish': 'sv-SE',
                 }
 
 def findLang(inputString):

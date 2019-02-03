@@ -6,7 +6,6 @@ import urllib.request
 from google.cloud import speech
 from google.cloud.speech import enums
 from google.cloud.speech import types
-
 # Instantiates a client
 client = speech.SpeechClient()
 
@@ -22,6 +21,7 @@ def test(url):
     confidence = response.results[0].alternatives[0].confidence
 
     print(text)
+    
     print(confidence)
     # for result in response.results:
         # print('Transcript: {}'.format(result.alternatives[0]))
