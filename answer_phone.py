@@ -4,32 +4,20 @@ from twilio.twiml.voice_response import VoiceResponse
 
 app = Flask(__name__)
 
-@app.route("/test", methods=['GET', 'POST'])
-def answer_call():
-    resp = VoiceResponse()
-    resp.say("We are all homos. Homo sapiens.", voice='alice')
-    return str(resp)
-
-@app.route("/recording", methods=['GET', 'POST'])
-def test():
-    print('in test')
-    print('---')
+@app.route("/recorded", methods=['GET', 'POST'])
+def recorded():
     print('url: {}'.format(request.form['RecordingUrl']))
-    print('---')
     response = VoiceResponse()
+    response.say('Thank you')
     response.hangup()
-
     return str(response)
 
-
+# this is the entry point of a call
 @app.route("/answer", methods=['GET', 'POST'])
-def record():
+def answer():
     response = VoiceResponse()
     response.say('Hello, Please leave a message after the beep.')
-    print('recording...')
-    response.record(action='/recording', timeout=3, trim='trim-silence')
-    response.hangup()
-
+    response.record(action='/recorded', timeout=2, trim='trim-silence')
     return str(response)
 
 if __name__ == "__main__":
