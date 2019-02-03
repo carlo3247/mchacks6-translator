@@ -9,6 +9,7 @@ from twilio.twiml.voice_response import VoiceResponse
 import urllib.request
 import time
 import langaugeIdentifier
+import watson
 
 app = Flask(__name__)
 stt_client = speech.SpeechClient()
@@ -31,7 +32,7 @@ def speech_to_text(audio_content, lang):
 def get_higher_confidence(content):
     textA, confidenceA = speech_to_text(content, first_lang)
     textB, confidenceB = speech_to_text(content, second_lang)
-    return text, first_lang if confidenceA > confidenceB else textB, second_lang
+    return textA, first_lang if confidenceA > confidenceB else textB, second_lang
 
 @app.route("/recorded", methods=['GET', 'POST'])
 def recorded():
