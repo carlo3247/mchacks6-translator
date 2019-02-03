@@ -34,7 +34,7 @@ def get_higher_confidence(content):
     textA, confidenceA = speech_to_text(content, first_lang)
     textB, confidenceB = speech_to_text(content, second_lang)
     print('text: {} confidence: {} lang: {}'.format(textA, confidenceA, first_lang))
-    print('text: {} confidence: {} lang: {}'.format(textB, confidenceB, first_lang))
+    print('text: {} confidence: {} lang: {}'.format(textB, confidenceB, second_lang))
     if confidenceA > confidenceB:
         return textA, first_lang
     else:
@@ -93,8 +93,10 @@ def recorded():
 # this is the entry point of a call
 @app.route("/answer", methods=['GET', 'POST'])
 def answer():
+    global second_lang
+    second_lang = ''
     response = VoiceResponse()
-    response.say('Hello, Please leave a message after the beep.')
+    response.say('Hello, what language do you want to translate to?')
     response.record(action='/recorded', timeout=2, trim='trim-silence')
     return str(response)
 
