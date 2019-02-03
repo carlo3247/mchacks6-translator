@@ -1,22 +1,42 @@
+from google.cloud import speech
+from google.cloud.speech import enums
+from google.cloud.speech import types
+
 from flask import Flask
 from flask import request
 from twilio.twiml.voice_response import VoiceResponse
 
 import urllib.request
-
-from google.cloud import speech
-from google.cloud.speech import enums
-from google.cloud.speech import types
+import time
 
 app = Flask(__name__)
-
 stt_client = speech.SpeechClient()
+
+britney = """"Oh baby, baby
+Oh baby, baby
+Oh baby, baby, how was I supposed to know
+That something wasn't right here
+Oh baby, baby, I shouldn't have let you go
+And now you're out of sight, yeah
+Show me how want it to be
+Tell me baby 'cause I need to know now, oh because
+My loneliness is killing me (and I)
+I must confess I still believe (still believe)
+When I'm not with you I lose my mind
+Give me a sign
+Hit me baby one more time"""
 
 @app.route("/recorded", methods=['GET', 'POST'])
 def recorded():
     # get url
-    print('url: {}'.format(request.form['RecordingUrl']))
     url = request.form['RecordingUrl']
+
+    print('---')
+    print(url)
+    print('---')
+
+    # maybe this works
+    time.sleep(0.5)
 
     # get .wav file
     audio_file = urllib.request.urlopen(url)
@@ -27,10 +47,23 @@ def recorded():
     config = types.RecognitionConfig(language_code='en-US')
     stt_response = stt_client.recognize(config, audio)
 
-    print(stt_response[0].alternatives[0])
+    if len(stt_response.results) > 0:
+        text = stt_response.results[0].alternatives[0].transcript
+        confidence = stt_response.results[0].alternatives[0].confidence
+    else:
+        text = ''
+        confidence = 0
+
+    print('---')
+    print(text)
+    print(confidence)
+    print('---')
 
     response = VoiceResponse()
-    response.say('Thank you')
+    if text.__contains__('britney'):
+        response.say(britney, voice='alice', language='en-US')
+    else:
+        response.say(text, voice='alice', language='en-US')
     response.hangup()
     return str(response)
 
