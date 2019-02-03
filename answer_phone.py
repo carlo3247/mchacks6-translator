@@ -28,6 +28,9 @@ Hit me baby one more time"""
 
 @app.route("/recorded", methods=['GET', 'POST'])
 def recorded():
+    if(request.form['CallStatus'] == 'completed':
+        return
+
     # get url
     url = request.form['RecordingUrl']
 
@@ -51,8 +54,9 @@ def recorded():
         text = stt_response.results[0].alternatives[0].transcript
         confidence = stt_response.results[0].alternatives[0].confidence
     else:
-        text = ''
-        confidence = 0
+        response.say('Sorry, I did not get that. Please try again.', voice='alice', language='en-US')
+        response.record(action='/recorded', timeout=2, trim='trim-silence')
+        return str(response)
 
     print('---')
     print(text)
@@ -60,11 +64,12 @@ def recorded():
     print('---')
 
     response = VoiceResponse()
-    if text.__contains__('britney'):
+    if text.__contains__('Britney'):
         response.say(britney, voice='alice', language='en-US')
     else:
         response.say(text, voice='alice', language='en-US')
-    response.hangup()
+        response.record(action='/recorded', timeout=2, trim='trim-silence')
+    # response.hangup()
     return str(response)
 
 # this is the entry point of a call
