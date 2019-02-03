@@ -2,7 +2,7 @@ import re
 def findLang(inputString):
     inputString = inputString.lower();
     listOfWords= re.split('\W+', inputString)
-    print(listOfWords)
+    #print(listOfWords)
     languageList = ['arabic', 
                 'chinese', 
                 'czech', 
